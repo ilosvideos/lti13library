@@ -31,7 +31,7 @@ class LTI_Service_Connector {
         $client_id = $this->registration->get_client_id();
         $auth_url = $this->registration->get_auth_token_url();
         $jwt_claim = [
-                "iss" => "TODO_CHANGE_ME",
+                "iss" => "149710000000000004",
                 "sub" => $client_id,
                 "aud" => $auth_url,
                 "iat" => time() - 5,

@@ -92,6 +92,9 @@ class LTI_OIDC_Login {
             $auth_params['lti_message_hint'] = $request['lti_message_hint'];
         }
 
+        /*echo $registration->get_auth_login_url();
+        exit;*/
+
         $auth_login_return_url = $registration->get_auth_login_url() . "?" . http_build_query($auth_params);
 
         // Return auth redirect.

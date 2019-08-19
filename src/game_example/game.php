@@ -7,8 +7,10 @@ $launch = LTI\LTI_Message_Launch::new(new Example_Database())
     ->validate();
 
 ?><link href="static/breakout.css" rel="stylesheet"><?php
+echo $launch->get_launch_data()['https://purl.imsglobal.org/spec/lti/claim/custom']['email'];
 
 if ($launch->is_deep_link_launch()) {
+
     ?>
     <div class="dl-config">
         <h1>Pick a Difficulty</h1>

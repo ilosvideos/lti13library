@@ -6,6 +6,7 @@ use \IMSGlobal\LTI\LTI_Registration;
 use \IMSGlobal\LTI\LTI_Deployment;
 $_SESSION['iss'] = [
     'http://localhost/' => [
+        'issuer' => 'https://cloud.ilosvideos.com',
         'client_id' => 'testing12345',
         'auth_login_url' => TOOL_HOST . '/example/platform/return.php',
         'key_set_url' => 'http://localhost/example/platform/jwks.json',

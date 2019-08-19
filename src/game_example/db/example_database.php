@@ -13,6 +13,7 @@ class Example_Database implements LTI\Database {
         if (empty($_SESSION['iss']) || empty($_SESSION['iss'][$iss])) {
             return false;
         }
+
         return LTI\LTI_Registration::new()
             ->set_auth_login_url($_SESSION['iss'][$iss]['auth_login_url'])
             ->set_auth_token_url($_SESSION['iss'][$iss]['auth_token_url'])

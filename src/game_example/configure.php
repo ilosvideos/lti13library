@@ -11,6 +11,7 @@ $resource = LTI\LTI_Deep_Link_Resource::new()
     ->set_url(TOOL_HOST . "/game_example/game.php")
     ->set_custom_params(['difficulty' => $_REQUEST['diff']])
     ->set_title('Breakout ' . $_REQUEST['diff'] . ' mode!');
+
 $launch->get_deep_link()
     ->output_response_form([$resource]);
 ?>

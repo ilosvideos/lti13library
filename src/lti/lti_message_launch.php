@@ -90,6 +90,7 @@ class LTI_Message_Launch {
         if ($request === null) {
             $request = $_POST;
         }
+
         $this->request = $request;
 
         return $this->validate_state()
