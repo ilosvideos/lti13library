@@ -1,6 +1,6 @@
 {
     "description": "Test",
-    "name": "ilosvideos/lti13PhpLibrary",
+    "name": "ilosvideos/lti13library",
     "type": "library",
     "config": {
         "vendor-dir": "src/vendor/"
