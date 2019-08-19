@@ -1,7 +1,6 @@
 <?php
 namespace IMSGlobal\LTI;
 
-require __DIR__ . '/../vendor/autoload.php';
 include_once("lti_exception.php");
 include_once("lti_names_roles_provisioning_service.php");
 include_once("lti_assignments_grades_service.php");

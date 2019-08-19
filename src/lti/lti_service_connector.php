@@ -1,8 +1,6 @@
 <?php
 namespace IMSGlobal\LTI;
 
-require __DIR__ . '/../vendor/autoload.php';
-
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\JWK;
 
