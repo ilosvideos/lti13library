@@ -3,5 +3,6 @@ composer.phar
 composer.lock
 src/game_example/db/keys/*
 src/game_example/db/configs/local.json
+src/vendor
 .env
 /.idea/

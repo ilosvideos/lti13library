@@ -1,6 +1,7 @@
 <?php
 namespace IMSGlobal\LTI;
 
+require __DIR__ . '/../vendor/autoload.php';
 include_once("lti_exception.php");
 include_once("lti_names_roles_provisioning_service.php");
 include_once("lti_assignments_grades_service.php");
@@ -11,11 +12,6 @@ include_once("cache.php");
 include_once("message_validator.php");
 include_once("lti_grade.php");
 include_once("lti_lineitem.php");
-require_once('jwt/src/BeforeValidException.php');
-require_once('jwt/src/ExpiredException.php');
-require_once('jwt/src/SignatureInvalidException.php');
-require_once('jwt/src/JWT.php');
-require_once('jwt/src/JWK.php');
 
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\JWK;
