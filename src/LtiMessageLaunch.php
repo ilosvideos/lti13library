@@ -8,7 +8,7 @@ include_once("LtiServiceConnector.php");
 require_once('LtiDeepLink.php');
 include_once("Cookie.php");
 include_once("Cache.php");
-include_once("message_validator.php");
+include_once("MessageValidator.php");
 include_once("LtiGrade.php");
 include_once("LtiLineItem.php");
 
