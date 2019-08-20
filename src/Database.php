@@ -1,7 +1,7 @@
 <?php
 namespace IMSGlobal\LTI;
 
-include_once("Registration.php");
+include_once("LtiRegistration.php");
 include_once("LtiDeployment.php");
 
 interface Database {

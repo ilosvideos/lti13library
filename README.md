@@ -79,9 +79,9 @@ class Example_Database implements LTI\Database {
 }
 ```
 
-The `find_registration_by_issuer` method must return an `LTI\LTI_Registration`.
+The `find_registration_by_issuer` method must return an `LTI\LtiRegistration`.
 ```php
-return LTI\LTI_Registration::new()
+return LTI\LtiRegistration::new()
     ->set_auth_login_url($auth_login_url)
     ->set_auth_token_url($auth_token_url)
     ->set_client_id($client_id)
