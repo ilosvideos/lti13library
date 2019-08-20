@@ -186,6 +186,29 @@ class LTI_Message_Launch {
         return $this->launch_id;
     }
 
+    public function validate_jwt_format() {
+        $jwt = $this->request['id_token'];
+
+        if (empty($jwt)) {
+            throw new LTI_Exception("Missing id_token", 1);
+        }
+
+        // Get parts of JWT.
+        $jwt_parts = explode('.', $jwt);
+
+        if (count($jwt_parts) !== 3) {
+            // Invalid number of parts in JWT.
+            throw new LTI_Exception("Invalid id_token, JWT must contain 3 parts", 1);
+        }
+
+        // Decode JWT headers.
+        $this->jwt['header'] = json_decode(JWT::urlsafeB64Decode($jwt_parts[0]), true);
+        // Decode JWT Body.
+        $this->jwt['body'] = json_decode(JWT::urlsafeB64Decode($jwt_parts[1]), true);
+
+        return $this;
+    }
+
     private function get_public_key() {
         $key_set_url = $this->registration->get_key_set_url();
 
@@ -223,29 +246,6 @@ class LTI_Message_Launch {
             // Error if state doesn't match
             throw new LTI_Exception("State not found", 1);
         }
-        return $this;
-    }
-
-    private function validate_jwt_format() {
-        $jwt = $this->request['id_token'];
-
-        if (empty($jwt)) {
-            throw new LTI_Exception("Missing id_token", 1);
-        }
-
-        // Get parts of JWT.
-        $jwt_parts = explode('.', $jwt);
-
-        if (count($jwt_parts) !== 3) {
-            // Invalid number of parts in JWT.
-            throw new LTI_Exception("Invalid id_token, JWT must contain 3 parts", 1);
-        }
-
-        // Decode JWT headers.
-        $this->jwt['header'] = json_decode(JWT::urlsafeB64Decode($jwt_parts[0]), true);
-        // Decode JWT Body.
-        $this->jwt['body'] = json_decode(JWT::urlsafeB64Decode($jwt_parts[1]), true);
-
         return $this;
     }
 
