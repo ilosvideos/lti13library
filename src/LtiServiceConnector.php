@@ -4,7 +4,7 @@ namespace IMSGlobal\LTI;
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\JWK;
 
-class LTI_Service_Connector {
+class LTIServiceConnector {
     private $registration;
     private $access_tokens = [];
 

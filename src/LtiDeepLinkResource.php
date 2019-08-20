@@ -1,7 +1,7 @@
 <?php
 namespace IMSGlobal\LTI;
 
-class LTI_Deep_Link_Resource {
+class LtiDeepLinkResource {
 
     private $type = 'ltiResourceLink';
     private $title;
@@ -11,7 +11,7 @@ class LTI_Deep_Link_Resource {
     private $target = 'iframe';
 
     public function new() {
-        return new LTI_Deep_Link_Resource();
+        return new LtiDeepLinkResource();
     }
 
     public function get_type() {

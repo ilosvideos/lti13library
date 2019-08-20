@@ -1,21 +1,21 @@
 <?php
 namespace IMSGlobal\LTI;
 
-include_once("lti_exception.php");
-include_once("lti_names_roles_provisioning_service.php");
-include_once("lti_assignments_grades_service.php");
-include_once("lti_service_connector.php");
-require_once('lti_deep_link.php');
-include_once("cookie.php");
-include_once("cache.php");
+include_once("LtiException.php");
+include_once("LtiNamesRolesProvisioningService.php");
+include_once("LtiAssignmentsGradesService.php");
+include_once("LtiServiceConnector.php");
+require_once('LtiDeepLink.php');
+include_once("Cookie.php");
+include_once("Cache.php");
 include_once("message_validator.php");
-include_once("lti_grade.php");
-include_once("lti_lineitem.php");
+include_once("LtiGrade.php");
+include_once("LtiLineItem.php");
 
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\JWK;
 
-class LTI_Message_Launch {
+class LtiMessageLaunch {
 
     private $db;
     private $cache;
@@ -52,21 +52,21 @@ class LTI_Message_Launch {
      * Static function to allow for method chaining without having to assign to a variable first.
      */
     public static function new(Database $database, Cache $cache = null, Cookie $cookie = null) {
-        return new LTI_Message_Launch($database, $cache, $cookie);
+        return new LtiMessageLaunch($database, $cache, $cookie);
     }
 
     /**
-     * Load an LTI_Message_Launch from a Cache using a launch id.
+     * Load an LtiMessageLaunch from a Cache using a launch id.
      *
-     * @param string    $launch_id  The launch id of the LTI_Message_Launch object that is being pulled from the cache.
+     * @param string    $launch_id  The launch id of the LtiMessageLaunch object that is being pulled from the cache.
      * @param Database  $database   Instance of the database interface used for looking up registrations and deployments.
      * @param Cache     $cache      Instance of the Cache interface used to loading and storing launches. If non is provided launch data will be store in $_SESSION.
      *
-     * @throws LTI_Exception        Will throw an LTI_Exception if validation fails or launch cannot be found.
-     * @return LTI_Message_Launch   A populated and validated LTI_Message_Launch.
+     * @throws LtiException        Will throw an LtiException if validation fails or launch cannot be found.
+     * @return LtiMessageLaunch   A populated and validated LtiMessageLaunch.
      */
     public static function from_cache($launch_id, Database $database, Cache $cache = null) {
-        $new = new LTI_Message_Launch($database, $cache, null);
+        $new = new LtiMessageLaunch($database, $cache, null);
         $new->launch_id = $launch_id;
         $new->jwt = [ 'body' => $new->cache->get_launch_data($launch_id) ];
         return $new->validate_registration();
@@ -77,8 +77,8 @@ class LTI_Message_Launch {
      *
      * @param array|string  $request    An array of post request parameters. If not set will default to $_POST.
      *
-     * @throws LTI_Exception        Will throw an LTI_Exception if validation fails.
-     * @return LTI_Message_Launch   Will return $this if validation is successful.
+     * @throws LtiException        Will throw an LtiException if validation fails.
+     * @return LtiMessageLaunch   Will return $this if validation is successful.
      */
     public function validate(array $request = null) {
 
@@ -110,11 +110,11 @@ class LTI_Message_Launch {
     /**
      * Fetches an instance of the names and roles service for the current launch.
      *
-     * @return LTI_Names_Roles_Provisioning_Service An instance of the names and roles service that can be used to make calls within the scope of the current launch.
+     * @return LtiNamesRolesProvisioningService An instance of the names and roles service that can be used to make calls within the scope of the current launch.
      */
     public function get_nrps() {
-        return new LTI_Names_Roles_Provisioning_Service(
-            new LTI_Service_Connector($this->registration),
+        return new LtiNamesRolesProvisioningService(
+            new LTIServiceConnector($this->registration),
             $this->jwt['body']['https://purl.imsglobal.org/spec/lti-nrps/claim/namesroleservice']);
     }
 
@@ -130,21 +130,21 @@ class LTI_Message_Launch {
     /**
      * Fetches an instance of the assignments and grades service for the current launch.
      *
-     * @return LTI_Assignments_Grades_Service An instance of the assignments an grades service that can be used to make calls within the scope of the current launch.
+     * @return LtiAssignmentsGradesService An instance of the assignments an grades service that can be used to make calls within the scope of the current launch.
      */
     public function get_ags() {
-        return new LTI_Assignments_Grades_Service(
-            new LTI_Service_Connector($this->registration),
+        return new LtiAssignmentsGradesService(
+            new LTIServiceConnector($this->registration),
             $this->jwt['body']['https://purl.imsglobal.org/spec/lti-ags/claim/endpoint']);
     }
 
     /**
      * Fetches a deep link that can be used to construct a deep linking response.
      *
-     * @return LTI_Deep_Link An instance of a deep link to construct a deep linking response for the current launch.
+     * @return LtiDeepLink An instance of a deep link to construct a deep linking response for the current launch.
      */
     public function get_deep_link() {
-        return new LTI_Deep_Link(
+        return new LtiDeepLink(
             $this->registration,
             $this->jwt['body']['https://purl.imsglobal.org/spec/lti/claim/deployment_id'],
             $this->jwt['body']['https://purl.imsglobal.org/spec/lti-dl/claim/deep_linking_settings']);
@@ -190,7 +190,7 @@ class LTI_Message_Launch {
         $jwt = $this->request['id_token'];
 
         if (empty($jwt)) {
-            throw new LTI_Exception("Missing id_token", 1);
+            throw new LtiException("Missing id_token", 1);
         }
 
         // Get parts of JWT.
@@ -198,7 +198,7 @@ class LTI_Message_Launch {
 
         if (count($jwt_parts) !== 3) {
             // Invalid number of parts in JWT.
-            throw new LTI_Exception("Invalid id_token, JWT must contain 3 parts", 1);
+            throw new LtiException("Invalid id_token, JWT must contain 3 parts", 1);
         }
 
         // Decode JWT headers.
@@ -217,7 +217,7 @@ class LTI_Message_Launch {
 
         if (empty($public_key_set)) {
             // Failed to fetch public keyset from URL.
-            throw new LTI_Exception("Failed to fetch public key", 1);
+            throw new LtiException("Failed to fetch public key", 1);
         }
 
         // Find key used to sign the JWT (matches the KID in the header)
@@ -232,7 +232,7 @@ class LTI_Message_Launch {
         }
 
         // Could not find public key with a matching kid and alg.
-        throw new LTI_Exception("Unable to find public key", 1);
+        throw new LtiException("Unable to find public key", 1);
     }
 
     private function cache_launch_data() {
@@ -244,14 +244,14 @@ class LTI_Message_Launch {
         // Check State for OIDC.
         if ($this->cookie->get_cookie('lti1p3_' . $this->request['state']) !== $this->request['state']) {
             // Error if state doesn't match
-            throw new LTI_Exception("State not found", 1);
+            throw new LtiException("State not found", 1);
         }
         return $this;
     }
 
     private function validate_nonce() {
         if (!$this->cache->check_nonce($this->jwt['body']['nonce'])) {
-            //throw new LTI_Exception("Invalid Nonce");
+            //throw new LtiException("Invalid Nonce");
         }
         return $this;
     }
@@ -261,14 +261,14 @@ class LTI_Message_Launch {
         $this->registration = $this->db->find_registration_by_issuer($this->jwt['body']['iss']);
 
         if (empty($this->registration)) {
-            throw new LTI_Exception("Registration not found.", 1);
+            throw new LtiException("Registration not found.", 1);
         }
 
         // Check client id.
         $client_id = is_array($this->jwt['body']['aud']) ? $this->jwt['body']['aud'][0] : $this->jwt['body']['aud'];
         if ( $client_id !== $this->registration->get_client_id()) {
             // Client not registered.
-            throw new LTI_Exception("Client id not registered for this issuer", 1);
+            throw new LtiException("Client id not registered for this issuer", 1);
         }
 
         return $this;
@@ -284,7 +284,7 @@ class LTI_Message_Launch {
         } catch(\Exception $e) {
             var_dump($e);
             // Error validating signature.
-            throw new LTI_Exception("Invalid signature on id_token", 1);
+            throw new LtiException("Invalid signature on id_token", 1);
         }
 
         return $this;
@@ -296,7 +296,7 @@ class LTI_Message_Launch {
 
         if (empty($deployment)) {
             // deployment not recognized.
-            throw new LTI_Exception("Unable to find deployment", 1);
+            throw new LtiException("Unable to find deployment", 1);
         }
 
         return $this;
@@ -305,7 +305,7 @@ class LTI_Message_Launch {
     private function validate_message() {
         if (empty($this->jwt['body']['https://purl.imsglobal.org/spec/lti/claim/message_type'])) {
             // Unable to identify message type.
-            throw new LTI_Exception("Invalid message type", 1);
+            throw new LtiException("Invalid message type", 1);
         }
 
         // Do message type validation
@@ -321,7 +321,7 @@ class LTI_Message_Launch {
         foreach ($classes as $class_name) {
             // Check the class implements message validator
             $reflect = new \ReflectionClass($class_name);
-            if ($reflect->implementsInterface('\IMSGlobal\LTI\Message_Validator')) {
+            if ($reflect->implementsInterface('\IMSGlobal\LTI\MessageValidator')) {
                 // Create instance of class
                 $validators[] = new $class_name();
             }
@@ -332,18 +332,18 @@ class LTI_Message_Launch {
             if ($validator->can_validate($this->jwt['body'])) {
                 if ($message_validator !== false) {
                     // Can't have more than one validator apply at a time.
-                    throw new LTI_Exception("Validator conflict", 1);
+                    throw new LtiException("Validator conflict", 1);
                 }
                 $message_validator = $validator;
             }
         }
 
         if ($message_validator === false) {
-            throw new LTI_Exception("Unrecognized message type.", 1);
+            throw new LtiException("Unrecognized message type.", 1);
         }
 
         if (!$message_validator->validate($this->jwt['body'])) {
-            throw new LTI_Exception("Message validation failed.", 1);
+            throw new LtiException("Message validation failed.", 1);
         }
 
         return $this;

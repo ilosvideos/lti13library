@@ -1,12 +1,12 @@
 <?php
 namespace IMSGlobal\LTI;
 
-include_once("oidc_exception.php");
-include_once("redirect.php");
-include_once("cookie.php");
-include_once("cache.php");
+include_once("OidcException.php");
+include_once("Redirect.php");
+include_once("Cookie.php");
+include_once("Cache.php");
 
-class LTI_OIDC_Login {
+class LtiOidcLogin {
 
     private $db;
     private $cache;
@@ -36,7 +36,7 @@ class LTI_OIDC_Login {
      * Static function to allow for method chaining without having to assign to a variable first.
      */
     public static function new(Database $database, Cache $cache = null, Cookie $cookie = null) {
-        return new LTI_OIDC_Login($database, $cache, $cookie);
+        return new LtiOidcLogin($database, $cache, $cookie);
     }
 
     /**
