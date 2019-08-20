@@ -54,7 +54,7 @@ class LtiOidcLogin {
         }
 
         if (empty($launch_url)) {
-            throw new OIDC_Exception("No launch URL configured", 1);
+            throw new OidcException("No launch URL configured", 1);
         }
 
         // Validate Request Data.
@@ -106,12 +106,12 @@ class LtiOidcLogin {
 
         // Validate Issuer.
         if (empty($request['iss'])) {
-            throw new OIDC_Exception("Could not find issuer", 1);
+            throw new OidcException("Could not find issuer", 1);
         }
 
         // Validate Login Hint.
         if (empty($request['login_hint'])) {
-            throw new OIDC_Exception("Could not find login hint", 1);
+            throw new OidcException("Could not find login hint", 1);
         }
 
         // Fetch Registration Details.
@@ -119,7 +119,7 @@ class LtiOidcLogin {
 
         // Check we got something.
         if (empty($registration)) {
-            throw new OIDC_Exception("Could not find registration details", 1);
+            throw new OidcException("Could not find registration details", 1);
         }
 
         // Return Registration.

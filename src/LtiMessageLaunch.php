@@ -186,7 +186,7 @@ class LtiMessageLaunch {
         return $this->launch_id;
     }
 
-    public function validate_jwt_format() {
+    private function validate_jwt_format() {
         $jwt = $this->request['id_token'];
 
         if (empty($jwt)) {

@@ -109,11 +109,11 @@ $login = LtiOidcLogin::new(new Example_Database());
 ```
 
 Now you must configure your login request with a return url (this must be preconfigured and white-listed on the tool).
-If a redirect url is not given or the registration does not exist an `LTI\OIDC_Exception` will be thrown.
+If a redirect url is not given or the registration does not exist an `LTI\OidcException` will be thrown.
 ```php
 try {
     $redirect = $login->do_oidc_login_redirect("https://my.tool/launch");
-} catch (LTI\OIDC_Exception $e) {
+} catch (LTI\OidcException $e) {
     echo 'Error doing OIDC login';
 }
 ```
