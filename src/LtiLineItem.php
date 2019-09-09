@@ -1,7 +1,7 @@
 <?php
 namespace IMSGlobal\LTI;
 
-class LTI_Lineitem {
+class LtiLineItem {
     private $id;
     private $score_maximum;
     private $label;
@@ -27,7 +27,7 @@ class LTI_Lineitem {
      * Static function to allow for method chaining without having to assign to a variable first.
      */
     public static function new() {
-        return new LTI_Lineitem();
+        return new LtiLineItem();
     }
 
     public function get_id() {

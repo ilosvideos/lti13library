@@ -4,11 +4,11 @@ namespace IMSGlobal\LTI;
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\JWK;
 
-class LTI_Service_Connector {
+class LTIServiceConnector {
     private $registration;
     private $access_tokens = [];
 
-    public function __construct(LTI_Registration $registration) {
+    public function __construct(LtiRegistration $registration) {
         $this->registration = $registration;
     }
 
