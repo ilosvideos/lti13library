@@ -9,6 +9,7 @@ class LtiDeepLinkResource {
     private $lineitem;
     private $custom_params = [];
     private $target = 'iframe';
+    private $iframe;
 
     public function new() {
         return new LtiDeepLinkResource();
@@ -68,11 +69,17 @@ class LtiDeepLinkResource {
         return $this;
     }
 
+    public function set_iframe($value) {
+        $this->iframe = $value;
+        return $this;
+    }
+
     public function to_array() {
         $resource = [
             "type" => $this->type,
             "title" => $this->title,
             "url" => $this->url,
+            "iframe" => $this->iframe,
             "presentation" => [
                 "documentTarget" => $this->target,
             ],
