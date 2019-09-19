@@ -212,8 +212,20 @@ class LtiMessageLaunch {
     private function get_public_key() {
         $key_set_url = $this->registration->get_key_set_url();
 
+        $dargs= [
+            "ssl"=> [
+                "verify_peer"=>false,
+                "verify_peer_name"=>false
+            ],
+            "http"=> [
+                'timeout' => 60,
+                'user_agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.9) Gecko/20071025 Firefox/3.0.0.1'
+            ]
+        ];
+
+        $context = stream_context_create($dargs);
         // Download key set
-        $public_key_set = json_decode(file_get_contents($key_set_url), true);
+        $public_key_set = json_decode(file_get_contents($key_set_url, false, $context), true);
 
         if (empty($public_key_set)) {
             // Failed to fetch public keyset from URL.
