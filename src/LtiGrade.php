@@ -8,6 +8,7 @@ class LtiGrade {
     private $grading_progress;
     private $timestamp;
     private $user_id;
+    private $comment;
 
     /**
      * Static function to allow for method chaining without having to assign to a variable first.
@@ -70,12 +71,22 @@ class LtiGrade {
         return $this;
     }
 
+    public function get_comment() {
+        return $this->comment;
+    }
+
+    public function set_comment($value) {
+        $this->comment = $value;
+        return $this;
+    }
+
     public function __toString() {
         return json_encode(array_filter([
             "scoreGiven" => 0 + $this->score_given,
             "scoreMaximum" => 0 + $this->score_maximum,
             "activityProgress" => $this->activity_progress,
             "gradingProgress" => $this->grading_progress,
+            "comment" => $this->comment,
             "timestamp" => $this->timestamp,
             "userId" => $this->user_id,
         ]));
