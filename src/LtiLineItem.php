@@ -17,10 +17,10 @@ class LtiLineItem {
         $this->id = $lineitem["id"];
         $this->score_maximum = $lineitem["scoreMaximum"];
         $this->label = $lineitem["label"];
-        $this->resource_id = $lineitem["resourceId"];
+        $this->resource_id = $lineitem["resourceId"] ?? $lineitem['resourceLinkId'] ?? null;
         $this->tag = $lineitem["tag"];
-        $this->start_date_time = $lineitem["startDateTime"];
-        $this->end_date_time = $lineitem["endDateTime"];
+        $this->start_date_time = $lineitem["startDateTime"] ?? null;
+        $this->end_date_time = $lineitem["endDateTime"] ?? null;
     }
 
     /**
