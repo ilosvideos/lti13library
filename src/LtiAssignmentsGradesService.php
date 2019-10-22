@@ -31,6 +31,7 @@ class LtiAssignmentsGradesService {
             $score_url = $lineitem->get_id();
         }
         $score_url .= '/scores';
+
         return $this->service_connector->make_service_request(
             $this->service_data['scope'],
             'POST',
@@ -38,6 +39,10 @@ class LtiAssignmentsGradesService {
             strval($grade),
             'application/vnd.ims.lis.v1.score+json'
         );
+    }
+
+    public function has_default_line_item() {
+        return !empty($this->service_data['lineitem']);
     }
 
     public function find_or_create_lineitem(LtiLineItem $new_line_item) {
@@ -54,7 +59,11 @@ class LtiAssignmentsGradesService {
         );
 
         foreach ($line_items['body'] as $line_item) {
-            if ($line_item['tag'] ?? null == $new_line_item->get_tag()) {
+            if(!isset($line_item['tag'])) {
+                continue;
+            }
+
+            if ($line_item['tag'] == $new_line_item->get_tag()) {
                 return new LtiLineItem($line_item);
             }
         }

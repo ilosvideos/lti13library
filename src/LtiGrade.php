@@ -9,6 +9,7 @@ class LtiGrade {
     private $timestamp;
     private $user_id;
     private $comment;
+    private $submission_link;
 
     /**
      * Static function to allow for method chaining without having to assign to a variable first.
@@ -80,6 +81,15 @@ class LtiGrade {
         return $this;
     }
 
+    public function get_submission_link() {
+        return $this->submission_link;
+    }
+
+    public function set_submission_link($value) {
+        $this->submission_link = $value;
+        return $this;
+    }
+
     public function __toString() {
         return json_encode(array_filter([
             "scoreGiven" => 0 + $this->score_given,
@@ -89,6 +99,11 @@ class LtiGrade {
             "comment" => $this->comment,
             "timestamp" => $this->timestamp,
             "userId" => $this->user_id,
+            "https://canvas.instructure.com/lti/submission" => [
+                "new_submission" => true,
+                "submission_type" => "online_url",
+                "submission_data" => $this->submission_link
+            ]
         ]));
     }
 }

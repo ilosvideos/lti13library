@@ -15,10 +15,10 @@ class LtiLineItem {
             return;
         }
         $this->id = $lineitem["id"];
-        $this->score_maximum = $lineitem["scoreMaximum"];
-        $this->label = $lineitem["label"];
+        $this->score_maximum = $lineitem["scoreMaximum"] ?? null;
+        $this->label = $lineitem["label"] ?? null;
         $this->resource_id = $lineitem["resourceId"] ?? $lineitem['resourceLinkId'] ?? null;
-        $this->tag = $lineitem["tag"];
+        $this->tag = $lineitem["tag"] ?? null;
         $this->start_date_time = $lineitem["startDateTime"] ?? null;
         $this->end_date_time = $lineitem["endDateTime"] ?? null;
     }
