@@ -30,7 +30,7 @@ class LtiAssignmentsGradesService {
             $lineitem = $this->find_or_create_lineitem($lineitem);
             $score_url = $lineitem->get_id();
         }
-        $score_url .= '/scores';
+        $score_url = $this->getScoreUrlSuffix($score_url);
 
         return $this->service_connector->make_service_request(
             $this->service_data['scope'],
@@ -43,6 +43,19 @@ class LtiAssignmentsGradesService {
 
     public function has_default_line_item() {
         return !empty($this->service_data['lineitem']);
+    }
+
+    //Stupid moodle whyyyyy!!
+    private function getScoreUrlSuffix($url) {
+        $queryString = parse_url($url, PHP_URL_QUERY);
+        if (!$queryString) {
+            return $url.'/scores';
+        } else {
+            $parsedUrl = parse_url($url);
+            $constructedUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $parsedUrl['path'];
+            $constructedUrl .= '/scores?'.$queryString;
+            return $constructedUrl;
+        }
     }
 
     public function find_or_create_lineitem(LtiLineItem $new_line_item) {
