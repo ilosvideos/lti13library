@@ -6,7 +6,7 @@ class Cookie {
         return $_COOKIE[$name];
     }
 
-    public function set_cookie($name, $value, $exp = 3600) {
+    public function set_cookie($name, $value, $exp = 14400) {
         setcookie($name, $value, time() + $exp);
         return $this;
     }
