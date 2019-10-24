@@ -7,7 +7,7 @@ class LtiDeepLinkResource {
     private $title;
     private $url;
     private $lineitem;
-    private $custom_params = [];
+    private $custom_params = [1 => 2];
     private $target = 'iframe';
     private $iframe;
     private $embed;
