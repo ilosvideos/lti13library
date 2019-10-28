@@ -6,9 +6,12 @@ class LtiRegistration {
     private $issuer;
     private $client_id;
     private $key_set_url;
+    private $key_id;
     private $auth_token_url;
     private $auth_login_url;
     private $tool_key_set;
+    private $audience;
+
 
     public static function new() {
         return new LtiRegistration();
@@ -41,6 +44,15 @@ class LtiRegistration {
         return $this;
     }
 
+    public function get_key_id() {
+        return $this->key_id;
+    }
+
+    public function set_key_id($key_id) {
+        $this->key_id = $key_id;
+        return $this;
+    }
+
     public function get_auth_token_url() {
         return $this->auth_token_url;
     }
@@ -68,6 +80,14 @@ class LtiRegistration {
         return $this;
     }
 
+    public function get_audience() {
+        return $this->audience;
+    }
+
+    public function set_audience($audience) {
+        $this->audience = $audience;
+        return $this;
+    }
 }
 
 ?>

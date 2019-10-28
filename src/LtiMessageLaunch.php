@@ -234,7 +234,7 @@ class LtiMessageLaunch {
 
         // Find key used to sign the JWT (matches the KID in the header)
         foreach ($public_key_set['keys'] as $key) {
-            if ($key['kid'] == $this->jwt['header']['kid'] && $key['alg'] == $this->jwt['header']['alg']) {
+            if ($key['kid'] == $this->jwt['header']['kid']) {
                 try {
                     return openssl_pkey_get_details(JWK::parseKey($key));
                 } catch(\Exception $e) {

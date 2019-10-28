@@ -25,16 +25,21 @@ class LTIServiceConnector {
         $client_id = $this->registration->get_client_id();
         $auth_url = $this->registration->get_auth_token_url();
         $jwt_claim = [
-            "iss" => "149710000000000004",
+            "iss" => $client_id,
             "sub" => $client_id,
-            "aud" => $auth_url,
+            "aud" => $this->registration->get_audience(),
             "iat" => time() - 5,
             "exp" => time() + 60,
             "jti" => uniqid("lti-service-token")
         ];
 
         // Sign the JWT with our private key (given by the platform on registration)
-        $jwt = JWT::encode($jwt_claim, $this->registration->get_tool_private_key(), 'RS256');
+        $jwt = JWT::encode(
+            $jwt_claim,
+            $this->registration->get_tool_private_key(),
+            'RS256',
+            $this->registration->get_key_id()
+        );
 
         // Build auth token request headers
         $auth_request = [
