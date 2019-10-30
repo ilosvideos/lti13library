@@ -7,7 +7,13 @@ class Cookie {
     }
 
     public function set_cookie($name, $value, $exp = 14400) {
-        setcookie($name, $value, time() + $exp);
+        setcookie($name, $value, [
+            'expires' => time() + $exp,
+            'samesite' => 'none',
+            'path' => '/',
+            'secure' => true
+        ]);
+
         return $this;
     }
 }
