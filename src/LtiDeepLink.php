@@ -16,6 +16,7 @@ class LtiDeepLink {
     }
 
     public function get_response_jwt($resources) {
+
         $message_jwt = [
             "iss" => $this->registration->get_client_id(),
             "aud" => [$this->registration->get_issuer()],
@@ -28,6 +29,9 @@ class LtiDeepLink {
             "https://purl.imsglobal.org/spec/lti-dl/claim/content_items" => array_map(function($resource) { return $resource->to_array(); }, $resources),
             "https://purl.imsglobal.org/spec/lti-dl/claim/data" => $this->deep_link_settings['data'] ?? null,
         ];
+
+        $message_jwt = array_filter($message_jwt);
+
         return JWT::encode($message_jwt,
             $this->registration->get_tool_private_key(),
             'RS256',
