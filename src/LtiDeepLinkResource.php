@@ -11,6 +11,8 @@ class LtiDeepLinkResource {
     private $target = 'iframe';
     private $iframe;
     private $embed;
+    private $available_start_date;
+    private $available_end_date;
 
     public function new() {
         return new LtiDeepLinkResource();
@@ -80,6 +82,17 @@ class LtiDeepLinkResource {
         return $this;
     }
 
+    public function set_available_start_date($value) {
+        $this->available_start_date = $value;
+        return $this;
+    }
+
+    public function set_available_end_date($value) {
+        $this->available_end_date = $value;
+        return $this;
+    }
+
+
     public function to_array() {
         $resource = [
             "type" => $this->type,
@@ -98,6 +111,12 @@ class LtiDeepLinkResource {
             $resource["lineItem"] = [
                 "scoreMaximum" => $this->lineitem->get_score_maximum(),
                 "label" => $this->lineitem->get_label(),
+            ];
+        }
+        if($this->available_start_date || $this->available_end_date) {
+            $resource["available"] = [
+                "startDateTime" => $this->available_start_date,
+                "endDateTime" => $this->available_end_date,
             ];
         }
         return $resource;
