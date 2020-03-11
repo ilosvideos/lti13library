@@ -17,7 +17,7 @@ class ResourceMessageValidator implements MessageValidator {
             throw new LtiException('Missing Roles Claim');
         }
         if (empty($jwt_body['https://purl.imsglobal.org/spec/lti/claim/resource_link']['id'])) {
-            throw new LtiException('Missing Resource Link Id');
+            //throw new LtiException('Missing Resource Link Id');
         }
 
         return true;
