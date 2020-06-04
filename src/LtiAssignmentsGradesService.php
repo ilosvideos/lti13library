@@ -78,6 +78,7 @@ class LtiAssignmentsGradesService {
             'application/vnd.ims.lis.v2.lineitemcontainer+json'
         );
 
+        \Log::info("LTI Grade: ".print_r($line_items['body'], true));
         foreach ($line_items['body'] as $line_item) {
             if (isset($line_item['id']) && $line_item['id'] === $id) {
                 return new LtiLineItem($line_item);
@@ -100,7 +101,6 @@ class LtiAssignmentsGradesService {
             'application/vnd.ims.lis.v2.lineitemcontainer+json'
         );
 
-        \Log::info("LTI Grade: ".print_r($line_items['body'], true));
         foreach ($line_items['body'] as $line_item) {
             if (isset($line_item['tag']) && $line_item['tag'] == $new_line_item->get_tag()) {
                 return new LtiLineItem($line_item);
