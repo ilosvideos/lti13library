@@ -45,7 +45,7 @@ class LtiAssignmentsGradesService {
     }
 
     public function get_default_line_item() {
-        return $this->service_data['lineitem'];
+        return $this->service_data['lineitem'] ?? null;
     }
 
     public function has_default_line_item() {
