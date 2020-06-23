@@ -19,11 +19,11 @@ class LtiMessageLaunch {
 
     private $db;
     private $cache;
-    private $request;
+    public $request;
     private $cookie;
     private $jwt;
-    private $registration;
-    private $launch_id;
+    public $registration;
+    public $launch_id;
 
     /**
      * Constructor

@@ -3,14 +3,15 @@ namespace IMSGlobal\LTI;
 
 class LtiRegistration {
 
-    private $issuer;
-    private $client_id;
-    private $key_set_url;
-    private $key_id;
-    private $auth_token_url;
-    private $auth_login_url;
-    private $tool_key_set;
-    private $audience;
+    public $issuer;
+    public $client_id;
+    public $key_set_url;
+    public $key_id;
+    public $auth_token_url;
+    public $auth_login_url;
+    public $tool_key_set;
+    public $audience;
+    private $tool_private_key;
 
 
     public static function new() {
