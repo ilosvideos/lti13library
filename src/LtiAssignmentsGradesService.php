@@ -13,27 +13,12 @@ class LtiAssignmentsGradesService {
         $this->service_data = $service_data;
     }
 
-    public function put_grade(LtiGrade $grade, LtiLineItem $lineitem = null) {
+    public function put_grade(LtiGrade $grade, LtiLineItem $lineitem) {
         if (!in_array("https://purl.imsglobal.org/spec/lti-ags/scope/score", $this->service_data['scope'])) {
             throw new LtiException('Missing required scope', 1);
         }
-        $score_url = '';
-        if ($lineitem !== null && empty($lineitem->get_id())) {
-            $lineitem = $this->find_or_create_lineitem($lineitem);
-            $score_url = $lineitem->get_id();
-        } else if ($lineitem !== null && !empty($lineitem->get_id())) {
-            $score_url = $lineitem->get_id();
-        } else if ($lineitem === null && !empty($this->service_data['lineitem'])) {
-            $score_url = $this->service_data['lineitem'] ;
-        } else {
-            $lineitem = LtiLineItem::new()
-                ->set_label('default')
-                ->set_score_maximum(100);
-            $lineitem = $this->find_or_create_lineitem($lineitem);
-            $score_url = $lineitem->get_id();
-        }
 
-        $score_url = $this->getScoreUrlSuffix($score_url);
+        $score_url = $this->getScoreUrlSuffix($lineitem->get_id());
 
         return $this->service_connector->make_service_request(
             $this->service_data['scope'],
@@ -90,6 +75,47 @@ class LtiAssignmentsGradesService {
         return null;
     }
 
+    public function find_line_item_by_tag($tag) {
+        if (!in_array("https://purl.imsglobal.org/spec/lti-ags/scope/lineitem", $this->service_data['scope'])) {
+            throw new LtiException('Missing required scope', 1);
+        }
+
+        $queryParam = '?'.urlencode('tag='.$tag);
+
+        $line_items = $this->service_connector->make_service_request(
+            $this->service_data['scope'],
+            'GET',
+            $this->service_data['lineitems'].$queryParam,
+            null,
+            null,
+            'application/vnd.ims.lis.v2.lineitemcontainer+json'
+        );
+
+        foreach ($line_items['body'] as $line_item) {
+            if (isset($line_item['tag']) && $line_item['tag'] === $tag) {
+                return new LtiLineItem($line_item);
+            }
+        }
+
+        return null;
+    }
+
+    public function create_lineitem(LtiLineItem $new_line_item) {
+        if (!in_array("https://purl.imsglobal.org/spec/lti-ags/scope/lineitem", $this->service_data['scope'])) {
+            throw new LtiException('Missing required scope', 1);
+        }
+
+        $created_line_item = $this->service_connector->make_service_request(
+            $this->service_data['scope'],
+            'POST',
+            $this->service_data['lineitems'],
+            strval($new_line_item),
+            'application/vnd.ims.lis.v2.lineitem+json',
+            'application/vnd.ims.lis.v2.lineitem+json'
+        );
+
+        return new LtiLineItem($created_line_item['body']);
+    }
     public function find_or_create_lineitem(LtiLineItem $new_line_item, $assignment_id = null) {
         if (!in_array("https://purl.imsglobal.org/spec/lti-ags/scope/lineitem", $this->service_data['scope'])) {
             throw new LtiException('Missing required scope', 1);
@@ -129,8 +155,7 @@ class LtiAssignmentsGradesService {
         return new LtiLineItem($created_line_item['body']);
     }
 
-    public function get_grades(LtiLineItem $lineitem, $assignment_id) {
-        $lineitem = $this->find_or_create_lineitem($lineitem, $assignment_id);
+    public function get_grades(LtiLineItem $lineitem) {
         $scores = $this->service_connector->make_service_request(
             $this->service_data['scope'],
             'GET',
