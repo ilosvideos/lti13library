@@ -117,11 +117,15 @@ class LtiAssignmentsGradesService {
         return new LtiLineItem($created_line_item['body']);
     }
 
-    public function get_grades(LtiLineItem $lineitem) {
+    public function get_grades(LtiLineItem $lineitem, string $sub) {
+        $queryParam = '?user_id='.$sub;
+        $url = $lineitem->get_id() . '/results'.$queryParam;
+        Log::channel('lti')->info("LTI Grade URL: ".$url);
+
         $scores = $this->service_connector->make_service_request(
             $this->service_data['scope'],
             'GET',
-            $lineitem->get_id() . '/results',
+            $url,
             null,
             null,
             'application/vnd.ims.lis.v2.resultcontainer+json'
