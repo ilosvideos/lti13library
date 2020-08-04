@@ -120,7 +120,7 @@ class LtiAssignmentsGradesService {
     public function get_grades(LtiLineItem $lineitem, ?string $sub) {
         $queryParam = '?user_id='.$sub;
         $url = $lineitem->get_id() . '/results'.$queryParam;
-        Log::channel('lti')->info("LTI Grade URL: ".$url);
+        \Log::channel('lti')->info("LTI Grade URL: ".$url);
 
         $scores = $this->service_connector->make_service_request(
             $this->service_data['scope'],
