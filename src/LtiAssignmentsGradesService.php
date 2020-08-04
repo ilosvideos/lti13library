@@ -117,7 +117,7 @@ class LtiAssignmentsGradesService {
         return new LtiLineItem($created_line_item['body']);
     }
 
-    public function get_grades(LtiLineItem $lineitem, string $sub) {
+    public function get_grades(LtiLineItem $lineitem, ?string $sub) {
         $queryParam = '?user_id='.$sub;
         $url = $lineitem->get_id() . '/results'.$queryParam;
         Log::channel('lti')->info("LTI Grade URL: ".$url);
