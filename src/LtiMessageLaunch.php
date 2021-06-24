@@ -273,7 +273,7 @@ class LtiMessageLaunch {
         $this->registration = $this->db->find_registration_by_issuer($this->jwt['body']['iss']);
 
         if (empty($this->registration)) {
-            throw new LtiException("Registration not found.", 1);
+            throw new LtiException("Registration not found for issuer: \"{$this->jwt['body']['iss']}\"", 1);
         }
 
         // Check client id.
