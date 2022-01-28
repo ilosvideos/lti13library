@@ -292,6 +292,7 @@ class LtiMessageLaunch {
 
         // Validate JWT signature
         try {
+            JWT::$leeway = 20; // $leeway in seconds
             JWT::decode($this->request['id_token'], $public_key['key'], array('RS256'));
         } catch(\Exception $e) {
             var_dump($e);
