@@ -91,8 +91,7 @@ class LtiGrade {
     }
 
     public function __toString() {
-        return json_encode(array_filter([
-            "scoreGiven" => 0 + $this->score_given,
+        $filtered_array = array_filter([
             "scoreMaximum" => 0 + $this->score_maximum,
             "activityProgress" => $this->activity_progress,
             "gradingProgress" => $this->grading_progress,
@@ -104,7 +103,11 @@ class LtiGrade {
                 "submission_type" => "online_url",
                 "submission_data" => $this->submission_link
             ]
-        ]));
+        ]);
+        if (isset($this->score_given)) { // "0" is a valid score to send.  But, array_filter treats it as falsy and strips out, so we need to handle it separately.
+            $filtered_array["scoreGiven"] = 0 + $this->score_given;
+        }
+        return json_encode($filtered_array);
     }
 }
 ?>
