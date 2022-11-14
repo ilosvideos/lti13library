@@ -280,7 +280,8 @@ class LtiMessageLaunch {
         $client_id = is_array($this->jwt['body']['aud']) ? $this->jwt['body']['aud'][0] : $this->jwt['body']['aud'];
         if ( $client_id !== $this->registration->get_client_id()) {
             // Client not registered.
-            throw new LtiException("Client id not registered for this issuer", 1);
+            $details = 'expected: ' . $this->registration->get_client_id() . ' received: '. $client_id . ' jwt[\'body\']: ' . print_r($this->jwt['body'], true);
+            throw new LtiException("Client id not registered for this issuer", 1, null, $details);
         }
 
         return $this;
